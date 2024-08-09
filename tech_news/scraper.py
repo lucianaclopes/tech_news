@@ -1,6 +1,7 @@
 from parsel import Selector
 import time
 import requests
+import re
 
 
 # Requisito 1 modificando para fazer o commit inicial do projeto
@@ -47,7 +48,37 @@ def scrape_next_page_link(html_content):
 # Requisito 4
 def scrape_news(html_content):
     """Seu código deve vir aqui"""
-    raise NotImplementedError
+    selector = Selector(text=html_content)
+    url = selector.css('link[rel="canonical"]::attr(href)').get()
+    title = selector.css(
+        'h1.entry-title::text'
+        ).get().strip()
+    timestamp = selector.css(
+        'li.meta-date::text'
+        ).get()
+    writer = selector.css(
+        'span.fn a::text'
+        ).get().strip()
+    reading_time_text = selector.css(
+        'li.meta-reading-time::text'
+        ).get()
+    reading_time = re.search(r'\d+', reading_time_text).group()
+
+    summary = (
+        "".join(selector.css('div.entry-content > p:first-of-type *::text')
+                .getall())
+    ).strip()
+    category = selector.css('span.label::text').get()
+
+    return {
+            'url': url,
+            'title': title,
+            'timestamp': timestamp,
+            'writer': writer,
+            'reading_time': int(reading_time),
+            'summary': summary,
+            'category': category
+                }
 
 
 # Requisito 5
