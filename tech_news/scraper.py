@@ -1,7 +1,22 @@
+import time
+import requests
+
+
 # Requisito 1 modificando para fazer o commit inicial do projeto
 def fetch(url):
     """Seu código deve vir aqui"""
-    raise NotImplementedError
+    try:
+        time.sleep(1)
+        response = requests.get(
+            url,
+            headers={'User-Agent': 'Fake User Agent', 'Accept': 'text/html'},
+            timeout=3
+        )
+        if response.status_code == 200:
+            return response.text
+        return None
+    except requests.RequestException:
+        return None
 
 
 # Requisito 2
