@@ -1,4 +1,4 @@
-# Requisito 1 modificando para fazer o commit inicial
+# Requisito 1 modificando para fazer o commit inicial do projeto
 def fetch(url):
     """Seu código deve vir aqui"""
     raise NotImplementedError
